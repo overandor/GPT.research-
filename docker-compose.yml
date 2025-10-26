@@ -1,0 +1,61 @@
+version: '3.8'
+
+services:
+  champ-lm:
+    build: .
+    ports:
+      - "8501:8501"
+      - "9090:9090"
+    environment:
+      - SYMBOL=btcusdt
+      - DATA_ROOT=/data
+      - BATCH_SEC=30
+      - ALERT_WEBHOOK=${ALERT_WEBHOOK:-}
+    volumes:
+      - champ_data:/data
+      - ./config:/app/config
+      - ./logs:/app/logs
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: '1.0'
+        reservations:
+          memory: 1G
+          cpus: '0.5'
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8501/healthz"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+
+  llama3-8b:
+    image: ollama/ollama:latest
+    ports:
+      - "8001:11434"
+    volumes:
+      - llama_data:/root/.ollama
+    deploy:
+      resources:
+        limits:
+          memory: 16G
+          cpus: '4.0'
+
+  mistral-7b:
+    image: ollama/ollama:latest
+    ports:
+      - "8002:11434"
+    volumes:
+      - mistral_data:/root/.ollama
+    deploy:
+      resources:
+        limits:
+          memory: 14G
+          cpus: '4.0'
+
+volumes:
+  champ_data:
+  llama_data:
+  mistral_data:

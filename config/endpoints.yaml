@@ -1,0 +1,5 @@
+primary:
+  - name: llama3_8b
+    url: http://llama3-8b:8001/generate
+  - name: mistral_7b
+    url: http://mistral-7b:8002/generate
