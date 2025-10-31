@@ -153,7 +153,7 @@ class GDPPerCapitaAnalyzer:
         """Sum the per-capita profit required to meet the growth objective."""
 
         plan = self.profit_relay_plan(country, target_growth_rate, safety_margin)
-        total = sum(amount for _, amount in plan)
+        total = sum((amount for _, amount in plan), Decimal("0"))
         return total.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
 
     def detect_unrealistic_growth(
