@@ -160,7 +160,10 @@ class GDPPerCapitaAnalyzer:
 
         plan = self.profit_relay_plan(country, target_growth_rate, safety_margin)
         total = sum((amount for _, amount in plan), Decimal("0"))
-        return total.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
+        total_as_decimal = (
+            total if isinstance(total, Decimal) else Decimal(total)
+        )
+        return total_as_decimal.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
 
     def detect_unrealistic_growth(
         self,
