@@ -1,0 +1,34 @@
+name: MEMBRA Research Infrastructure CI
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "tools/research_infra_pipeline.py"
+      - "docs/RESEARCH_MARKET_VALUE_CICD.md"
+      - ".github/workflows/research-infra-ci.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  research-infra-report:
+    name: Build research value and infrastructure report
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run MEMBRA research infrastructure pipeline
+        run: python tools/research_infra_pipeline.py --out artifacts
+
+      - name: Upload research infrastructure artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: membra-research-infra-report
+          path: artifacts/
