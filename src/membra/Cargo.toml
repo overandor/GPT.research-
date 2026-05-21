@@ -1,0 +1,13 @@
+[package]
+name = "overandor-invariants"
+version = "0.1.0"
+edition = "2021"
+description = "Neutral MEMBRA overandor invariant source artifact for diligence and appraisal support"
+license = "UNLICENSED"
+publish = false
+
+[lib]
+name = "overandor_invariants"
+path = "overandor_invariants.rs"
+
+[dependencies]
