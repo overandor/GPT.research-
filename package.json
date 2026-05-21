@@ -1,0 +1,1 @@
+{"scripts":{"build":"mkdir -p dist && cp -R public/* dist/"},"dependencies":{},"devDependencies":{}}
