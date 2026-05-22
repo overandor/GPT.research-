@@ -1,0 +1,62 @@
+{
+  "title": "Bearinglessfull Collateral: A Risk Primitive for Distributed Hedge Capacity",
+  "paper_slug": "bearinglessfull-collateral",
+  "version": "0.2",
+  "doi": null,
+  "citation": "Skrobynets, Joseph. Bearinglessfull Collateral: A Risk Primitive for Distributed Hedge Capacity. Working paper.",
+  "source_hash": "replace_with_pdf_or_manuscript_sha256",
+  "endpoints": [
+    {
+      "slug": "bearinglessfull-score",
+      "name": "Bearinglessfull Score",
+      "description": "Computes a weighted collateral resilience score from normalized component scores. Inputs are expected on a 0 to 1 scale.",
+      "formula": "100 * (0.25 * venue_distribution + 0.25 * liquidation_distance + 0.20 * reserve_buffer + 0.15 * rebalance_readiness + 0.15 * access_resilience)",
+      "output_unit": "score_0_to_100",
+      "citation": "Working paper formula manifest v0.2",
+      "assumptions": [
+        "Inputs are normalized between 0 and 1.",
+        "Weights are operator-specified from the paper manifest and should be updated if the paper changes.",
+        "This computes the paper specification; it does not prove market safety or profitability."
+      ],
+      "variables": [
+        {"name": "venue_distribution", "type": "number", "minimum": 0, "maximum": 1, "description": "Collateral distribution resilience across venues."},
+        {"name": "liquidation_distance", "type": "number", "minimum": 0, "maximum": 1, "description": "Normalized distance from liquidation threshold."},
+        {"name": "reserve_buffer", "type": "number", "minimum": 0, "maximum": 1, "description": "Normalized reserve buffer adequacy."},
+        {"name": "rebalance_readiness", "type": "number", "minimum": 0, "maximum": 1, "description": "Operational readiness to rebalance collateral."},
+        {"name": "access_resilience", "type": "number", "minimum": 0, "maximum": 1, "description": "Access and custody resilience score."}
+      ]
+    },
+    {
+      "slug": "reserve-buffer-ratio",
+      "name": "Reserve Buffer Ratio",
+      "description": "Computes available reserve divided by required reserve.",
+      "formula": "available_reserve / required_reserve",
+      "output_unit": "ratio",
+      "citation": "Working paper formula manifest v0.2",
+      "assumptions": [
+        "A ratio above 1 means available reserve exceeds required reserve.",
+        "Required reserve must be greater than zero."
+      ],
+      "variables": [
+        {"name": "available_reserve", "type": "number", "minimum": 0, "description": "Available reserve value."},
+        {"name": "required_reserve", "type": "number", "minimum": 0.000000001, "description": "Required reserve value."}
+      ]
+    },
+    {
+      "slug": "liquidation-distance",
+      "name": "Liquidation Distance",
+      "description": "Computes relative distance between current collateral ratio and liquidation collateral ratio.",
+      "formula": "(current_collateral_ratio - liquidation_collateral_ratio) / liquidation_collateral_ratio",
+      "output_unit": "ratio",
+      "citation": "Working paper formula manifest v0.2",
+      "assumptions": [
+        "Ratios must use the same scale.",
+        "Liquidation collateral ratio must be greater than zero."
+      ],
+      "variables": [
+        {"name": "current_collateral_ratio", "type": "number", "minimum": 0, "description": "Current collateral ratio."},
+        {"name": "liquidation_collateral_ratio", "type": "number", "minimum": 0.000000001, "description": "Liquidation threshold collateral ratio."}
+      ]
+    }
+  ]
+}
